@@ -1,0 +1,69 @@
+
+import { Game, GameCategory } from '../types';
+
+export const GAMES: Game[] = [
+  {
+    id: '2048',
+    title: '2048',
+    description: 'Join the numbers and get to the 2048 tile!',
+    category: GameCategory.PUZZLE,
+    thumbnail: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=400&h=400&fit=crop',
+    url: 'https://play2048.co/'
+  },
+  {
+    id: 'hextris',
+    title: 'Hextris',
+    description: 'A fast-paced puzzle game inspired by Tetris.',
+    category: GameCategory.PUZZLE,
+    thumbnail: 'https://images.unsplash.com/photo-1550745679-5652175bdd48?w=400&h=400&fit=crop',
+    url: 'https://hextris.io/'
+  },
+  {
+    id: 'dino-run',
+    title: 'Chrome Dino',
+    description: 'The classic runner game from Google Chrome.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=400&h=400&fit=crop',
+    url: 'https://offline-dino-game.firebaseapp.com/'
+  },
+  {
+    id: 'paper-io',
+    title: 'Paper.io 2',
+    description: 'Capture as much territory as possible and beat the competition.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://images.unsplash.com/photo-1611996598518-88653987552a?w=400&h=400&fit=crop',
+    url: 'https://paper-io.com/'
+  },
+  {
+    id: 'slope',
+    title: 'Slope',
+    description: 'The ultimate running game that will put your skills to the test.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=400&h=400&fit=crop',
+    url: 'https://slopegame.online/'
+  },
+  {
+    id: 'crossy-road',
+    title: 'Crossy Road',
+    description: 'Why did the chicken cross the road?',
+    category: GameCategory.CASUAL,
+    thumbnail: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&h=400&fit=crop',
+    url: 'https://poki.com/en/g/crossy-road'
+  },
+  {
+    id: 'tetris',
+    title: 'Classic Tetris',
+    description: 'The legendary block-stacking puzzle game.',
+    category: GameCategory.RETRO,
+    thumbnail: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&h=400&fit=crop',
+    url: 'https://tetris.com/play-tetris'
+  },
+  {
+    id: 'basketball-stars',
+    title: 'Basketball Stars',
+    description: 'Show off your skills in the ultimate basketball challenge.',
+    category: GameCategory.SPORTS,
+    thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&h=400&fit=crop',
+    url: 'https://poki.com/en/g/basketball-stars'
+  }
+];
