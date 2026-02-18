@@ -1,25 +1,46 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { GameCategory } from './types.js';
-import { GAMES } from './data/games.js';
 import Navbar from './components/Navbar.js';
 import GameCard from './components/GameCard.js';
 import GameViewer from './components/GameViewer.js';
 
 const App = () => {
+  const [games, setGames] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedGame, setSelectedGame] = useState(null);
   const [activeCategory, setActiveCategory] = useState(GameCategory.ALL);
   const [searchTerm, setSearchTerm] = useState('');
 
+  useEffect(() => {
+    // Fetch games from the JSON file
+    fetch('./data/games.json')
+      .then(res => res.json())
+      .then(data => {
+        setGames(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load games:", err);
+        setLoading(false);
+      });
+  }, []);
+
   const filteredGames = useMemo(() => {
-    return GAMES.filter(game => {
+    return games.filter(game => {
       const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = activeCategory === GameCategory.ALL || game.category === activeCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [searchTerm, activeCategory]);
+  }, [games, searchTerm, activeCategory]);
 
   const categories = Object.values(GameCategory);
+
+  if (loading) {
+    return React.createElement('div', { className: "min-h-screen bg-slate-950 flex items-center justify-center" },
+      React.createElement('div', { className: "text-indigo-500 animate-pulse font-black text-2xl tracking-widest" }, "LOADING NEXUS...")
+    );
+  }
 
   return React.createElement('div', { className: "min-h-screen pb-12" },
     React.createElement(Navbar, {
