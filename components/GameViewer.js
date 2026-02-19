@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 const GameViewer = ({ game, onClose }) => {
@@ -7,14 +6,22 @@ const GameViewer = ({ game, onClose }) => {
   const toggleFullscreen = () => {
     const iframe = document.getElementById('game-iframe');
     if (iframe) {
-      if (!isFullscreen) {
-        if (iframe.requestFullscreen) iframe.requestFullscreen();
-      } else {
-        if (document.exitFullscreen) document.exitFullscreen();
+      try {
+        if (!isFullscreen) {
+          if (iframe.requestFullscreen) iframe.requestFullscreen();
+          else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+        } else {
+          if (document.exitFullscreen) document.exitFullscreen();
+          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        }
+      } catch (e) {
+        console.warn("Fullscreen request failed", e);
       }
       setIsFullscreen(!isFullscreen);
     }
   };
+
+  const isHtmlSnippet = game.url.trim().startsWith('<');
 
   return React.createElement('div', { className: "fixed inset-0 z-[60] bg-black flex flex-col" },
     React.createElement('div', { className: "bg-slate-900 border-b border-slate-800 p-4 flex items-center justify-between" },
@@ -44,18 +51,49 @@ const GameViewer = ({ game, onClose }) => {
         }, "Close Game")
       )
     ),
-    React.createElement('div', { className: "flex-1 bg-[#111] relative" },
+    React.createElement('div', { className: "flex-1 bg-[#111] relative flex items-center justify-center overflow-hidden" },
       React.createElement('iframe', {
         id: "game-iframe",
-        src: game.url,
+        src: isHtmlSnippet ? undefined : game.url,
+        srcDoc: isHtmlSnippet ? `
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <style>
+                body, html { 
+                  margin: 0; 
+                  padding: 0; 
+                  width: 100%; 
+                  height: 100%; 
+                  display: flex; 
+                  align-items: center; 
+                  justify-content: center; 
+                  background: #111; 
+                  color: white; 
+                  overflow: hidden;
+                  font-family: sans-serif;
+                }
+                .c3htmlwrap {
+                  /* Ensure the provided snippet centers correctly if it has fixed dimensions */
+                  margin: auto !important;
+                  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+                }
+              </style>
+            </head>
+            <body>
+              ${game.url}
+            </body>
+          </html>
+        ` : undefined,
         className: "w-full h-full border-none shadow-2xl",
         allowFullScreen: true,
         allow: "autoplay; fullscreen; keyboard",
-        title: game.title
+        title: game.title,
+        sandbox: "allow-scripts allow-popups allow-forms allow-same-origin allow-popups-to-escape-sandbox allow-downloads allow-modals allow-storage-access-by-user-activation"
       })
     ),
     React.createElement('div', { className: "hidden md:block bg-slate-900 p-3 text-center text-xs text-slate-500" },
-      "Controls may vary by game. Press ", React.createElement('strong', null, "Esc"), " to exit full-screen if the button is unavailable."
+      "Running: Basketball Hoops Custom Nexus Embed"
     )
   );
 };
